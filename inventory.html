@@ -72,6 +72,305 @@
   .btn-restock { background:var(--orange); color:#fff; }
   .btn-adjust { background:var(--border); color:var(--text); }
 
+  .overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:200; }
+  .overlay.open { display:block; }
+
+  .modal { position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:430px; background:#fff; border-radius:24px 24px 0 0; z-index:201; display:none; max-height:92vh; overflow-y:auto; }
+  .modal.open { display:block; }
+  .modal-handle { width:40px; height:4px; background:var(--border); border-radius:4px; margin:16px auto 0; }
+  .modal-head { padding:16px 20px 4px; }
+  .modal-head h3 { font-family:'Nunito',sans-serif; font-size:18px; font-weight:800; }
+  .modal-head p { font-size:12px; color:var(--sub); margin-top:3px; }
+
+  .add-tabs { display:flex; gap:0; margin:14px 20px 0; background:var(--bg); border-radius:12px; padding:4px; }
+  .add-tab { flex:1; padding:9px; text-align:center; font-size:13px; font-weight:600; border-radius:9px; cursor:pointer; color:var(--sub); transition:all 0.2s; }
+  .add-tab.active { background:#fff; color:var(--orange); box-shadow:0 1px 6px rgba(0,0,0,0.08); }
+
+  .tab-panel { display:none; padding:16px 20px 20px; }
+  .tab-panel.active { display:block; }
+
+  .field { margin-bottom:14px; }
+  .field label { font-size:12px; font-weight:600; color:var(--sub); display:block; margin-bottom:6px; }
+  .field input, .field select { width:100%; background:var(--bg); border:1.5px solid var(--border); border-radius:12px; padding:11px 14px; font-size:14px; font-family:'Poppins',sans-serif; color:var(--text); outline:none; }
+  .field input:focus { border-color:var(--orange); }
+  .field-row { display:flex; gap:10px; }
+  .field-row .field { flex:1; }
+
+  .emoji-picker { display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
+  .emoji-opt { width:40px; height:40px; border-radius:10px; background:var(--bg); border:1.5px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:20px; cursor:pointer; }
+  .emoji-opt.selected { border-color:var(--orange); background:var(--orange-light); }
+
+  .save-btn { width:100%; background:var(--orange); color:#fff; border:none; border-radius:16px; padding:15px; font-size:15px; font-weight:700; cursor:pointer; font-family:'Poppins',sans-serif; margin-top:4px; }
+
+  /* ── SCAN PANEL ── */
+  .scan-viewport {
+    position:relative; background:#111; border-radius:16px; overflow:hidden;
+    margin-bottom:14px; min-height:260px; display:flex; align-items:center; justify-content:center;
+  }
+  #camVideo { width:100%; height:100%; object-fit:cover; display:none; border-radius:16px; min-height:260px; }
+  #camCanvas { display:none; }
+
+  /* Animated viewfinder */
+  .viewfinder { position:absolute; inset:0; display:none; align-items:center; justify-content:center; pointer-events:none; }
+  .viewfinder.on { display:flex; }
+  .vf-box { width:220px; height:140px; position:relative; }
+  .vf-box::before,.vf-box::after,.vf-box span::before,.vf-box span::after {
+    content:''; position:absolute; width:24px; height:24px; border-color:#fff; border-style:solid;
+  }
+  .vf-box::before  { top:0;    left:0;  border-width:3px 0 0 3px; border-radius:4px 0 0 0; }
+  .vf-box::after   { top:0;    right:0; border-width:3px 3px 0 0; border-radius:0 4px 0 0; }
+  .vf-box span::before { bottom:0; left:0; border-width:0 0 3px 3px; border-radius:0 0 0 4px; }
+  .vf-box span::after  { bottom:0; right:0; border-width:0 3px 3px 0; border-radius:0 0 4px 0; }
+  .scan-line {
+    position:absolute; left:10%; width:80%; height:2px;
+    background:linear-gradient(90deg,transparent,var(--orange),transparent);
+    border-radius:2px; animation:scanMove 1.8s ease-in-out infinite;
+  }
+  @keyframes scanMove { 0%,100%{top:20%;} 50%{top:78%;} }
+
+  .scan-placeholder { color:#fff; text-align:center; padding:30px 20px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+  .scan-placeholder .scan-icon { font-size:48px; margin-bottom:10px; }
+  .scan-placeholder p { font-size:13px; opacity:0.7; line-height:1.6; }
+
+  /* Permission error card shown inside the dark viewport */
+  .perm-card { background:#1c1c1c; border-radius:14px; padding:18px; text-align:center; color:#fff; width:100%; margin:12px; }
+  .perm-card .pi { font-size:32px; margin-bottom:8px; }
+  .perm-card h4 { font-size:14px; font-weight:700; margin-bottom:6px; }
+  .perm-card p  { font-size:12px; opacity:0.65; line-height:1.6; margin-bottom:10px; }
+  .perm-steps { text-align:left; background:rgba(255,255,255,0.07); border-radius:10px; padding:10px 14px; margin-bottom:12px; }
+  .perm-steps li { font-size:12px; opacity:0.85; margin-bottom:5px; list-style:none; padding-left:22px; position:relative; line-height:1.5; }
+  .perm-steps li::before { content:attr(data-n); position:absolute; left:0; font-weight:700; color:var(--orange); }
+  .retry-btn { background:var(--orange); color:#fff; border:none; border-radius:10px; padding:11px 20px; font-size:13px; font-weight:600; cursor:pointer; font-family:'Poppins',sans-serif; width:100%; }
+
+  .start-scan-btn { width:100%; background:var(--text); color:#fff; border:none; border-radius:14px; padding:14px; font-size:14px; font-weight:600; cursor:pointer; font-family:'Poppins',sans-serif; margin-bottom:10px; display:flex; align-items:center; justify-content:center; gap:8px; }
+  .start-scan-btn.scanning { background:#E53935; }
+
+  .scanned-result { background:var(--bg); border-radius:14px; padding:14px; margin-bottom:14px; border:1.5px solid var(--border); display:none; }
+  .scanned-result .sr-label { font-size:11px; color:var(--sub); font-weight:600; }
+  .scanned-result .sr-code { font-size:16px; font-weight:700; margin-top:2px; letter-spacing:1px; }
+
+  .scan-status { font-size:12px; text-align:center; color:var(--sub); margin-bottom:10px; padding:8px 12px; border-radius:10px; background:var(--bg); }
+  .scan-status.scanning { color:var(--orange); background:var(--orange-light); }
+  .scan-status.found    { color:var(--green);  background:#E3F7ED; }
+  .scan-status.error    { color:var(--red);    background:#FFE8E8; }
+
+  .divider-row { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+  .divider-row span { font-size:11px; color:var(--sub); font-weight:600; white-space:nowrap; }
+  .divider-line { flex:1; height:1px; background:var(--border); }
+
+  .qty-row { display:flex; align-items:center; justify-content:center; gap:20px; margin:16px 0; }
+  .big-qty-btn { width:48px; height:48px; border-radius:50%; border:none; font-size:24px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+  .bq-minus { background:var(--border); }
+  .bq-plus  { background:var(--orange); color:#fff; }
+  .qty-display { font-size:32px; font-weight:900; font-family:'Nunito',sans-serif; min-width:60px; text-align:center; }
+
+  .bottom-nav { position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:430px; background:#fff; border-top:1px solid var(--border); display:flex; align-items:center; height:var(--nav-h); padding:0 10px; z-index:100; box-shadow:0 -4px 20px rgba(0,0,0,0.06); }
+  .nav-item { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; text-decoration:none; color:var(--sub); padding:8px 0; }
+  .nav-item .nav-icon { font-size:22px; }
+  .nav-item span { font-size:10px; font-weight:600; }
+  .nav-item.active { color:var(--orange); }
+  .nav-pos { flex:0 0 68px; display:flex; align-items:center; justify-content:center; }
+  .nav-pos-btn { width:54px; height:54px; border-radius:50%; background:var(--orange); display:flex; align-items:center; justify-content:center; font-size:24px; box-shadow:0 4px 16px rgba(240,123,47,0.5); text-decoration:none; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <a href="index.html">←</a>
+    <h2>Inventory</h2>
+  </div>
+  <div class="header-btns">
+    <button class="add-btn" onclick="openAddModal()">＋ Add Item</button>
+  </div>
+</div>
+
+<div class="search-wrap">
+  <div class="search-box">
+    <span>🔍</span>
+    <input type="text" placeholder="Search inventory..." id="searchInput" oninput="renderList()">
+  </div>
+</div>
+
+<div class="status-row">
+  <div class="status-card sc-all"><div class="val" id="totalCount">0</div><div class="lbl">Total</div></div>
+  <div class="status-card sc-ok"><div class="val" id="okCount">0</div><div class="lbl">In Stock</div></div>
+  <div class="status-card sc-low"><div class="val" id="lowCount">0</div><div class="lbl">Low</div></div>
+  <div class="status-card sc-out"><div class="val" id="outCount">0</div><div class="lbl">Out</div></div>
+</div>
+
+<div class="filter-tabs">
+  <div class="ftab active" onclick="filterStatus(this,'all')">All Items</div>
+  <div class="ftab" onclick="filterStatus(this,'ok')">In Stock</div>
+  <div class="ftab" onclick="filterStatus(this,'low')">Low Stock</div>
+  <div class="ftab" onclick="filterStatus(this,'out')">Out of Stock</div>
+</div>
+
+<div class="section-title">Stock Overview</div>
+<div class="inv-list" id="invList"></div>
+
+<div class="overlay" id="overlay" onclick="closeAll()"></div>
+
+<!-- ADD ITEM MODAL -->
+<div class="modal" id="addModal">
+  <div class="modal-handle"></div>
+  <div class="modal-head">
+    <h3>Add New Item</h3>
+    <p>Fill in details o i-scan ang barcode</p>
+  </div>
+  <div class="add-tabs">
+    <div class="add-tab active" id="tabManual" onclick="switchTab('manual')">✏️ Manual</div>
+    <div class="add-tab" id="tabScan" onclick="switchTab('scan')">📷 Scan Barcode</div>
+  </div>
+
+  <!-- MANUAL -->
+  <div class="tab-panel active" id="panelManual">
+    <div class="field"><label>ITEM NAME</label><input type="text" id="newName" placeholder="e.g. Magic Flakes, Milo..."></div>
+    <div class="field"><label>CATEGORY</label><input type="text" id="newCat" placeholder="e.g. Snacks, Drinks..."></div>
+    <div class="field-row">
+      <div class="field"><label>CURRENT STOCK</label><input type="number" id="newStock" placeholder="0" min="0"></div>
+      <div class="field"><label>MAX STOCK</label><input type="number" id="newMax" placeholder="100" min="1"></div>
+    </div>
+    <div class="field"><label>PRICE (₱)</label><input type="number" id="newPrice" placeholder="0.00" min="0" step="0.01"></div>
+    <div class="field"><label>PICK ICON</label><div class="emoji-picker" id="emojiPicker"></div></div>
+    <button class="save-btn" onclick="saveNewItem()">Add to Inventory</button>
+  </div>
+
+  <!-- SCAN -->
+  <div class="tab-panel" id="panelScan">
+    <!-- Camera viewport -->
+    <div class="scan-viewport" id="scanViewport">
+      <div class="scan-placeholder" id="scanPlaceholder">
+        <div class="scan-icon">📷</div>
+        <p>I-tap ang button sa ibaba<br>para simulan ang barcode scan</p>
+      </div>
+      <video id="camVideo" autoplay playsinline muted></video>
+      <canvas id="camCanvas"></canvas>
+      <div class="viewfinder" id="viewfinder"><div class="vf-box"><span></span></div><div class="scan-line"></div></div>
+      <!-- Permission error shown here -->
+      <div id="permErrorBox" style="display:none; width:100%; padding:8px;">
+        <div class="perm-card">
+          <div class="pi">🔒</div>
+          <h4>Camera Permission Denied</h4>
+          <p>Kailangan mong payagan ang camera sa iyong browser.</p>
+          <ul class="perm-steps" id="permSteps"></ul>
+          <button class="retry-btn" onclick="retryCam()">🔄 Subukan Ulit</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="scan-status" id="scanStatus">Camera ay handa na</div>
+
+    <button class="start-scan-btn" id="startScanBtn" onclick="toggleScan()">
+      <span id="scanBtnIcon">📷</span>
+      <span id="scanBtnText">Simulan ang Camera Scan</span>
+    </button>
+
+    <div class="scanned-result" id="scannedResult">
+      <div class="sr-label">✅ SCANNED BARCODE</div>
+      <div class="sr-code" id="scannedCode">—</div>
+    </div>
+
+    <div class="divider-row">
+      <div class="divider-line"></div><span>O I-TYPE NANG MANO-MANO</span><div class="divider-line"></div>
+    </div>
+
+    <div class="field" style="margin-bottom:14px;">
+      <input type="text" id="manualBarcode" placeholder="I-type ang barcode number..." oninput="onManualBarcode(this.value)">
+    </div>
+
+    <div id="scanFormFields" style="display:none;">
+      <div class="field"><label>ITEM NAME</label><input type="text" id="scanName" placeholder="Item name..."></div>
+      <div class="field"><label>CATEGORY</label><input type="text" id="scanCat" placeholder="Category..."></div>
+      <div class="field-row">
+        <div class="field"><label>STOCK</label><input type="number" id="scanStock" placeholder="0" min="0"></div>
+        <div class="field"><label>MAX</label><input type="number" id="scanMax" placeholder="100" min="1"></div>
+      </div>
+      <div class="field"><label>PRICE (₱)</label><input type="number" id="scanPrice" placeholder="0.00" step="0.01"></div>
+    </div>
+    <button class="save-btn" id="scanSaveBtn" style="display:none;" onclick="saveScanItem()">Add to Inventory</button>
+    <div style="height:20px;"></div>
+  </div>
+</div>
+
+<!-- RESTOCK MODAL -->
+<div class="modal" id="restockModal">
+  <div class="modal-handle"></div>
+  <div class="modal-head">
+    <h3 id="modalTitle">Restock Item</h3>
+    <p id="modalSub">Add units to inventory</p>
+  </div>
+  <div style="padding:0 20px 24px;">
+    <div class="qty-row">
+      <button class="big-qty-btn bq-minus" onclick="changeAmt(-1)">−</button>
+      <div class="qty-display" id="qtyDisplay">10</div>
+      <button class="big-qty-btn bq-plus"  onclick="changeAmt(1)">+</button>
+    </div>
+    <button class="save-btn" onclick="saveRestock()">Confirm Restock</button>
+  </div>
+</div>
+
+<nav class="bottom-nav">
+  <a href="home.html" class="nav-item"><div class="nav-icon">🏠</div><span>Home</span></a>
+  <a href="pos.html"  class="nav-item"><div class="nav-icon">🧾</div><span>Transaction</span></a>
+  <div class="nav-pos"><a href="pos.html" class="nav-pos-btn">🛒</a></div>
+  <a href="inventory.html" class="nav-item active"><div class="nav-icon">📦</div><span>Inventory</span></a>
+  <a href="profile.html"   class="nav-item"><div class="nav-icon">👤</div><span>Profile</span></a>
+</nav>
+
+<!-- ZXing — better barcode decoding than html5-qrcode -->
+<script src="https://unpkg.com/@zxing/library@0.19.1/umd/index.min.js"></script>
+<script>
+/* ══ DATA ══ */
+const EMOJIS = ['🍿','🧃','🍜','🧴','🍬','🌾','🥤','🍦','🛍️','🧁','🍱','🥛','🍚','🧂','🥫','🍫','🧇','🍳','🥚','🫙'];
+function loadInventory(){ try{ const d=JSON.parse(localStorage.getItem('tindahan_inventory')); if(Array.isArray(d))return d; }catch(e){} return []; }
+function saveInventory(){ localStorage.setItem('tindahan_inventory',JSON.stringify(inventory)); }
+let inventory=loadInventory(), currentFilter='all', restockId=null, restockAmt=10;
+let selectedEmoji='🛍️', scannedBarcode='', scanning=false, zxReader=null, camStream=null;
+
+/* ══ EMOJI ══ */
+function buildEmojiPicker(){
+  document.getElementById('emojiPicker').innerHTML=EMOJIS.map(e=>
+    `<div class="emoji-opt${e===selectedEmoji?' selected':''}" onclick="selectEmoji('${e}',this)">${e}</div>`).join('');
+}
+function selectEmoji(e,el){ selectedEmoji=e; document.querySelec  .status-row { display:flex; gap:10px; padding:14px 16px; }
+  .status-card { flex:1; border-radius:14px; padding:12px; text-align:center; }
+  .status-card .val { font-size:22px; font-weight:900; font-family:'Nunito',sans-serif; }
+  .status-card .lbl { font-size:10px; font-weight:600; margin-top:2px; }
+  .sc-all { background:var(--card); box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+  .sc-all .val { color:var(--text); } .sc-all .lbl { color:var(--sub); }
+  .sc-ok { background:#E3F7ED; } .sc-ok .val { color:var(--green); } .sc-ok .lbl { color:var(--green); }
+  .sc-low { background:#FFF8E3; } .sc-low .val { color:var(--yellow); } .sc-low .lbl { color:var(--yellow); }
+  .sc-out { background:#FFE8E8; } .sc-out .val { color:var(--red); } .sc-out .lbl { color:var(--red); }
+
+  .filter-tabs { display:flex; gap:8px; padding:0 16px 12px; overflow-x:auto; scrollbar-width:none; }
+  .filter-tabs::-webkit-scrollbar { display:none; }
+  .ftab { flex-shrink:0; padding:7px 16px; border-radius:20px; border:1.5px solid var(--border); font-size:13px; font-weight:600; cursor:pointer; background:var(--card); color:var(--sub); }
+  .ftab.active { background:var(--orange); color:#fff; border-color:var(--orange); }
+
+  .section-title { font-family:'Nunito',sans-serif; font-size:16px; font-weight:800; padding:4px 20px 10px; }
+
+  .inv-list { padding:0 16px; display:flex; flex-direction:column; gap:10px; margin-bottom:90px; }
+  .inv-item { background:var(--card); border-radius:16px; padding:14px 16px; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+  .inv-top { display:flex; align-items:center; gap:12px; }
+  .inv-emoji { width:48px; height:48px; border-radius:13px; background:var(--bg); display:flex; align-items:center; justify-content:center; font-size:26px; flex-shrink:0; }
+  .inv-info { flex:1; }
+  .inv-info h4 { font-size:14px; font-weight:700; }
+  .inv-info p { font-size:12px; color:var(--sub); margin-top:1px; }
+  .inv-badge { font-size:10px; padding:3px 9px; border-radius:10px; font-weight:700; white-space:nowrap; }
+  .badge-ok { background:#E3F7ED; color:var(--green); }
+  .badge-low { background:#FFF8E3; color:var(--yellow); }
+  .badge-out { background:#FFE8E8; color:var(--red); }
+  .inv-progress { margin-top:10px; }
+  .prog-header { display:flex; justify-content:space-between; font-size:11px; color:var(--sub); margin-bottom:5px; }
+  .prog-bar { height:6px; background:var(--border); border-radius:10px; overflow:hidden; }
+  .prog-fill { height:100%; border-radius:10px; transition:width 0.3s; }
+  .fill-ok { background:var(--green); } .fill-low { background:var(--yellow); } .fill-out { background:var(--red); }
+  .inv-actions { display:flex; gap:8px; margin-top:10px; }
+  .inv-btn { flex:1; padding:8px; border-radius:10px; border:none; font-size:12px; font-weight:600; cursor:pointer; font-family:'Poppins',sans-serif; }
+  .btn-restock { background:var(--orange); color:#fff; }
+  .btn-adjust { background:var(--border); color:var(--text); }
+
   /* ── OVERLAY ── */
   .overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:200; }
   .overlay.open { display:block; }
